@@ -5,9 +5,7 @@
     <artifactId>moon-mybatis-generator-core</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>pattern</module>
-    </modules>
+
     <name>moon-mybatis-generator-core</name>
     <url>http://maven.apache.org</url>
 
