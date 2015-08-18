@@ -1,0 +1,34 @@
+package ${packageName};
+
+#foreach( ${import} in ${table.imports} )
+import ${import.qualifiedName};
+#end
+
+/**
+ * @author ${user}
+ * @version 1.0
+ * @since ${date}
+ */
+public class ${table.className}#if( ${baseClassName} ) extends ${baseClassName}#end {
+
+#foreach( ${column} in ${table.columns} )
+    private ${column.javaType} ${column.fieldName};
+#end
+
+#foreach( ${column} in ${table.columns} )
+    /**
+     * @return ${column.columnComment}
+     */
+    public ${column.javaType} get${column.methodName}() {
+        return ${column.fieldName};
+    }
+
+    /**
+     * @param ${column.fieldName} ${column.columnComment}
+     */
+    public void set${column.methodName}(${column.javaType} ${column.fieldName}) {
+        this.${column.fieldName} = ${column.fieldName};
+    }
+#end
+
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UserReplyMsg">
+    <typeAlias alias="UserReplyMsg" type="com.jd.weixin.domain.promotion.UserReplyMsg"/>
+
+    <resultMap id="userReplyMsgMap" class="UserReplyMsg">
+        <result property="id" column="id"/>
+        <result property="msgFd" column="msg_fd"/>
+        <result property="msgDesc" column="msg_desc"/>
+        <result property="msgVal" column="msg_val"/>
+        <result property="msgType" column="msg_type"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <update id="update" parameterClass="UserReplyMsg">
+        UPDATE `user_reply_msg`
+        <dynamic prepend="SET">
+            <isNotNull property="msgFd" prepend=","> msg_fd = #msgFd#</isNotNull>
+            <isNotNull property="msgDesc" prepend=","> msg_desc = #msgDesc#</isNotNull>
+            <isNotNull property="msgVal" prepend=","> msg_val = #msgVal#</isNotNull>
+            <isNotNull property="msgType" prepend=","> msg_type = #msgType#</isNotNull>
+            <isNotNull property="created" prepend=","> created = #created#</isNotNull>
+            <isNotNull property="modified" prepend=","> modified = #modified#</isNotNull>
+            <isNotNull property="status" prepend=","> status = #status#</isNotNull>
+        </dynamic>
+        WHERE id = #id#
+    </update>
+
+    <insert id="save" parameterClass="UserReplyMsg">
+        INSERT INTO `user_reply_msg` (`msg_fd`, `msg_desc`, `msg_val`, `msg_type`, `created`, `modified`, `status`)
+        VALUES (#msgFd#, #msgDesc#, #msgVal#, #msgType#, #created#, #modified#, #status#)
+        <selectKey resultClass="int" keyProperty="id">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterClass="java.lang.Long">
+        DELETE FROM `user_reply_msg` WHERE `id` = #id#
+    </delete>
+
+    <select id="queryForObjectById" parameterClass="java.lang.Long" resultMap="userReplyMsgMap">
+        SELECT `id`, `msg_fd`, `msg_desc`, `msg_val`, `msg_type`, `created`, `modified`, `status` FROM `user_reply_msg`
+        WHERE `id` = #id# LIMIT 1
+    </select>
+
+    <select id="queryForObject" parameterClass="UserReplyMsg" resultMap="userReplyMsgMap">
+        SELECT `id`, `msg_fd`, `msg_desc`, `msg_val`, `msg_type`, `created`, `modified`, `status` FROM `user_reply_msg`
+        <dynamic prepend="WHERE">
+            <isGreaterThan compareValue="0" property="id" prepend="AND"> `id` = #id#</isGreaterThan>
+            <isNotNull property="status" prepend="AND"> `status` = #status#</isNotNull>
+            <isNotNull property="msgFd" prepend="AND"> `msg_fd` = #msgFd#</isNotNull>
+        </dynamic>
+        LIMIT 1
+    </select>
+
+    <select id="queryForList" resultMap="userReplyMsgMap">
+        SELECT `id`, `msg_fd`, `msg_desc`, `msg_val`, `msg_type`, `created`, `modified`, `status` FROM `user_reply_msg`
+        LIMIT 1000
+    </select>
+
+</sqlMap>
